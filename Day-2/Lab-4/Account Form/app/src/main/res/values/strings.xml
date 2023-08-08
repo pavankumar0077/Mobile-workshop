@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Question 3</string>
+    <string name="invalid_fname">Enter First Name</string>
+    <string name="invalid_lname">Enter Last Name</string>
+    <string name="invalid">Enter Gender</string>
+    <string name="invalidgender">Enter Gender</string>
+    <string name="invalid_pmobile">Primary Numbrt</string>
+    <string name="invalidpmobile">Enter Primary Number</string>
+    <string name="invalid_mobile">Enter Alternative Number</string>
+    <string name="invalid_email">Enter Primary Email</string>
+    <string name="invalid_aemail">Enter Alternative Email</string>
+    <string name="invalid_aname">Enter Residence</string>
+</resources>
