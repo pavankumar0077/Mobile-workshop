@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- Text Input Fields -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Amount:"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter interest rate:"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/interestRateEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter interest rate (%)"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter duration (years):"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/durationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter duration (years)"
+        android:inputType="number"/>
+
+    <!-- Operation Buttons -->
+<!--    <Button-->
+<!--        android:id="@+id/depositButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Deposit"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/withdrawButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Withdraw"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/interestButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Interest"/>-->
+
+    <Button
+        android:id="@+id/depositButton"
+        style="@style/AppButtonStyle"
+        android:text="Deposit"/>
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/withdrawButton"
+        style="@style/AppButtonStyle"
+        android:text="Withdraw"/>
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/interestButton"
+        style="@style/AppButtonStyle"
+        android:text="Interest"/>
+
+</LinearLayout>

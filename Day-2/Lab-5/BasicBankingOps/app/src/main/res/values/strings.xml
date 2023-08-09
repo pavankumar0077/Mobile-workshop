@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Basic-Banking-Ops</string>
+
+
+
+
+<!--&lt;!&ndash; Define a custom style for the buttons &ndash;&gt;-->
+<!--<style name="AppButtonStyle" parent="Widget.AppCompat.Button">-->
+<!--    <item name="android:textSize">12sp</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:padding">6dp</item>-->
+<!--    <item name="android:layout_width">0dp</item>-->
+<!--    <item name="android:layout_height">wrap_content</item>-->
+<!--    <item name="android:layout_gravity">fill</item>-->
+<!--</style>-->
+
+<!--&lt;!&ndash; Define a custom style for the Toast message &ndash;&gt;-->
+<!--<style name="AppToastStyle">-->
+<!--    <item name="android:background">@drawable/toast_background</item>-->
+<!--    <item name="android:textColor">@android:color/white</item>-->
+<!--    <item name="android:textSize">14sp</item>-->
+<!--    <item name="android:padding">12dp</item>-->
+<!--</style>-->
+
+</resources>
