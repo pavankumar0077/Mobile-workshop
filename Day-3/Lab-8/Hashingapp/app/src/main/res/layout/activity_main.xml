@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/inputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter 10-character text"/>
+
+    <EditText
+        android:id="@+id/decryptEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Encrypted Value for Decryption"
+        android:layout_below="@id/inputEditText"
+        android:layout_marginTop="16dp"/>
+
+<!--    <EditText-->
+<!--        android:id="@+id/decryptEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Enter encrypted text for decryption"/>-->
+
+
+    <Button
+        android:id="@+id/encryptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/decryptEditText"
+        android:layout_centerHorizontal="true"
+        android:text="Encrypt"/>
+
+    <Button
+        android:id="@+id/decryptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Decrypt"
+        android:layout_below="@id/encryptButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/hashButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hash"
+        android:layout_below="@id/decryptButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/encryptedValueTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hashButton"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/encryptionResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/encryptedValueTextView"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/decryptionResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/encryptionResult"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/hashingResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/decryptionResult"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>
