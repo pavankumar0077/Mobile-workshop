@@ -14,171 +14,160 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText inputEditText;
-    private EditText decryptEditText;
     private TextView encryptionResultTextView;
     private TextView decryptionResultTextView;
     private TextView hashingResultTextView;
-    private TextView encryptedValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize views
         inputEditText = findViewById(R.id.inputEditText);
-        decryptEditText = findViewById(R.id.decryptEditText);
-        encryptedValueTextView = findViewById(R.id.encryptedValueTextView);
         Button encryptButton = findViewById(R.id.encryptButton);
         Button decryptButton = findViewById(R.id.decryptButton);
         Button hashButton = findViewById(R.id.hashButton);
-
         encryptionResultTextView = findViewById(R.id.encryptionResult);
         decryptionResultTextView = findViewById(R.id.decryptionResult);
         hashingResultTextView = findViewById(R.id.hashingResult);
 
-        // Using a hardcoded key for demonstration purposes.
-        String encryptionKey = "ThisIsASecretKey";
-
         // Set click listeners for buttons
-        encryptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputText = inputEditText.getText().toString();
-                if (inputText.length() != 10) {
-                    encryptionResultTextView.setText("Input text must be 10 characters long.");
-                    return;
-                }
-
-                String encryptedText = performEncryption(inputText);
-                encryptionResultTextView.setText("Encrypted Value: " + encryptedText);
-                copyToClipboard(encryptedText);
-            }
-        });
-
-        decryptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String encryptedText = decryptEditText.getText().toString();
-                if (encryptedText.isEmpty()) {
-                    decryptionResultTextView.setText("Please fill the encrypted value field.");
-                    return;
-                }
-
-                String decryptedText = performDecryption(encryptedText);
-                if (decryptedText.equals("Decryption Failed")) {
-                    decryptionResultTextView.setText("Decryption Failed. Invalid encrypted value.");
-                } else {
-                    decryptionResultTextView.setText("Decrypted: " + decryptedText);
-                    copyToClipboard(decryptedText);
-                }
-            }
-        });
-
-
-        hashButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputText = inputEditText.getText().toString();
-                if (inputText.isEmpty()) {
-                    hashingResultTextView.setText("Please fill the text in the field.");
-                    return;
-                } else if (inputText.length() != 10) {
-                    hashingResultTextView.setText("Input text must be 10 characters long.");
-                    return;
-                }
-
-                String hashedText = performHashing(inputText);
-                hashingResultTextView.setText("Hashed: " + hashedText);
-                copyToClipboard(hashedText); // Copy hashed value to clipboard
-            }
-        });
+        encryptButton.setOnClickListener(v -> performEncryption());
+        decryptButton.setOnClickListener(v -> performDecryption());
+        hashButton.setOnClickListener(v -> performHashing());
 
         // Set long-click listeners for copy functionality
         encryptionResultTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                String encryptedText = encryptionResultTextView.getText().toString();
-                if (!encryptedText.isEmpty() && encryptedText.startsWith("Encrypted: ")) {
-                    copyToClipboard(encryptedText.substring(11));
-                }
+            public boolean onLongClick(View view) {
+                copyToClipboard(encryptionResultTextView.getText().toString());
                 return true;
             }
         });
 
         decryptionResultTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                String decryptedText = decryptionResultTextView.getText().toString();
-                if (!decryptedText.isEmpty() && decryptedText.startsWith("Decrypted: ")) {
-                    copyToClipboard(decryptedText.substring(11));
-                }
+            public boolean onLongClick(View view) {
+                copyToClipboard(decryptionResultTextView.getText().toString());
                 return true;
             }
         });
 
         hashingResultTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                String hashedText = hashingResultTextView.getText().toString();
-                if (!hashedText.isEmpty() && hashedText.startsWith("Hashed: ")) {
-                    copyToClipboard(hashedText.substring(8));
-                }
+            public boolean onLongClick(View view) {
+                copyToClipboard(hashingResultTextView.getText().toString());
                 return true;
             }
         });
+
     }
 
-    private String performEncryption(String text) {
+    private void performEncryption() {
+        String inputText = inputEditText.getText().toString();
+        if (inputText.length() != 10) {
+            encryptionResultTextView.setText("Input text must be 10 characters long.");
+            return;
+        }
+
+        String encryptedText = performAES256Encryption(inputText);
+        encryptionResultTextView.setText("Encrypted Value: " + encryptedText);
+        copyToClipboard(encryptedText);
+    }
+
+    private void performDecryption() {
+        String encryptedText = encryptionResultTextView.getText().toString().substring(16); // Removing "Encrypted Value: "
+        if (encryptedText.isEmpty()) {
+            decryptionResultTextView.setText("Please encrypt a value first.");
+            return;
+        }
+
+        String decryptedText = performAES256Decryption(encryptedText);
+        decryptionResultTextView.setText("Decrypted: " + decryptedText);
+        copyToClipboard(decryptedText);
+    }
+
+    private void performHashing() {
+        String inputText = inputEditText.getText().toString();
+        if (inputText.isEmpty()) {
+            hashingResultTextView.setText("Please fill the text in the field.");
+            return;
+        } else if (inputText.length() != 10) {
+            hashingResultTextView.setText("Input text must be 10 characters long.");
+            return;
+        }
+
+        String hashedText = performSHA256Hashing(inputText);
+        hashingResultTextView.setText("Hashed: " + hashedText);
+        copyToClipboard(hashedText);
+    }
+
+    private String performAES256Encryption(String text) {
         try {
+            String encryptionKey = "ThisIsASecretKey";
+            byte[] keyBytes = encryptionKey.getBytes(StandardCharsets.UTF_8);
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] key = sha256.digest(text.getBytes());
-            Key secretKey = new SecretKeySpec(key, "AES");
+            keyBytes = sha256.digest(keyBytes);
+            byte[] iv = new byte[16]; // Initialization Vector
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(iv);
+            SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedBytes = cipher.doFinal(text.getBytes());
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(iv));
+            byte[] encryptedBytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
 
-            return Base64.encodeToString(encryptedBytes, Base64.DEFAULT);
+            byte[] combinedIvCiphertext = new byte[iv.length + encryptedBytes.length];
+            System.arraycopy(iv, 0, combinedIvCiphertext, 0, iv.length);
+            System.arraycopy(encryptedBytes, 0, combinedIvCiphertext, iv.length, encryptedBytes.length);
+
+            return Base64.encodeToString(combinedIvCiphertext, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
             return "Encryption Failed";
         }
     }
 
-    private String performDecryption(String encryptedText) {
+    private String performAES256Decryption(String encryptedText) {
         try {
-            String inputText = decryptEditText.getText().toString();
+            String encryptionKey = "ThisIsASecretKey";
+            byte[] keyBytes = encryptionKey.getBytes(StandardCharsets.UTF_8);
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] key = sha256.digest(inputText.getBytes());
-            Key secretKey = new SecretKeySpec(key, "AES");
+            keyBytes = sha256.digest(keyBytes);
 
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] encryptedBytes = Base64.decode(encryptedText, Base64.DEFAULT);
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            byte[] iv = new byte[16];
+            System.arraycopy(encryptedBytes, 0, iv, 0, iv.length);
+            byte[] ciphertext = new byte[encryptedBytes.length - iv.length];
+            System.arraycopy(encryptedBytes, iv.length, ciphertext, 0, ciphertext.length);
 
-            return new String(decryptedBytes);
+            SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
+            byte[] decryptedBytes = cipher.doFinal(ciphertext);
+
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
             return "Decryption Failed";
         }
     }
 
-
-
-    private String performHashing(String text) {
+    private String performSHA256Hashing(String text) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = messageDigest.digest(text.getBytes(StandardCharsets.UTF_8));
