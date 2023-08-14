@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Registration-Login</string>
+    <string name="validation_rules">
+    Validation Rules:\n
+    1. Username: Must contain at least one small letter and one digit (0-9).\n
+    2. Password: Must contain small and capital letters, a number, and a symbol.\n
+    3. Confirm Password: Should match the entered password.\n
+    4. Mobile Number: Should be a 10-digit number.\n
+    5. Email: Should be a valid email address.
+</string>
+
+
+
+</resources>
